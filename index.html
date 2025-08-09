@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Southern Shine - Premier Auto Detailing | Warner Robins & Byron, GA</title>
+    <meta name="description" content="Professional mobile auto detailing services in Warner Robins and Byron, GA. Where your ride gets the Southern Shine it deserves. Call Austin (478) 952-7965 or Bryton (478) 733-1387">
+    <meta name="keywords" content="auto detailing, car wash, mobile detailing, Warner Robins, Byron, Georgia, car care">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" onclick="showPage('home')">Southern Shine</a>
+            <ul class="nav-menu">
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="scrollToSection('about')">About</a></li>
+                <li><a href="#" onclick="scrollToSection('services')">Services</a></li>
+                <li><a href="#" onclick="scrollToSection('gallery')">Gallery</a></li>
+                <li><a href="#" onclick="scrollToSection('contact')">Contact</a></li>
+                <li><a href="#" onclick="showPage('booking')" class="btn btn-book">Book Now</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#" onclick="showPage('home'); closeMobileMenu()">Home</a>
+            <a href="#" onclick="scrollToSection('about'); closeMobileMenu()">About</a>
+            <a href="#" onclick="scrollToSection('services'); closeMobileMenu()">Services</a>
+            <a href="#" onclick="scrollToSection('gallery'); closeMobileMenu()">Gallery</a>
+            <a href="#" onclick="scrollToSection('contact'); closeMobileMenu()">Contact</a>
+            <a href="#" onclick="showPage('booking'); closeMobileMenu()" class="btn btn-book">Book Now</a>
+        </div>
+        
+    </nav>
+    
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content fade-in">
+                <h1>Southern Shine</h1>
+                <p class="hero-subtitle">Premium Mobile Auto Detailing</p>
+                <p class="hero-location">Serving Middle Georgia</p>
+                <div class="hero-buttons">
+                    <a href="#" onclick="showPage('booking')" class="btn btn-book">📅 Book Your Appointment</a>
+                    <a href="#" onclick="scrollToSection('services')" class="btn btn-secondary">🛠️ View Our Services</a>
+                    <a href="tel:478-952-7965" class="btn btn-primary">📞 Call Now</a>
+                </div>
+                <div class="scroll-indicator">
+                    <a href="#" onclick="scrollToSection('services')">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2>About Southern Shine</h2>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Middle Georgia's premier mobile auto detailing service, bringing professional car care directly to your location.</p>
+                </div>
+                
+                <div class="about-grid">
+                    <div class="slide-in-left">
+                        <div class="about-text">
+                            <p>Welcome to Southern Shine, where we've redefined auto detailing in Middle Georgia. Based in Warner Robins and Byron, we bring professional car care directly to your location, combining unmatched convenience with exceptional quality.</p>
+                            <p>Our team is dedicated to treating every vehicle with the care and attention it deserves. We use only premium products and proven techniques to ensure your ride receives the Southern Shine that sets it apart from the rest.</p>
+                        </div>
+                        <div class="about-features">
+                            <div class="feature-icon">✓</div>
+                            <div>
+                                <strong>Mobile Service • Quality Guaranteed • Local Experts</strong>
+                                <br><span class="feature-subtitle">Professional results at your convenience</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-in-right">
+                        <div class="about-card">
+                            <h3>Why Choose Us?</h3>
+                            <ul class="feature-list">
+                                <li>We come to you - no need to leave home or work</li>
+                                <li>Professional-grade products and equipment</li>
+                                <li>Flexible scheduling by appointment</li>
+                                <li>Locally owned and operated in Middle Georgia</li>
+                                <li>100% satisfaction guaranteed</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2>Our Services</h2>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Professional auto detailing services tailored to keep your vehicle looking its absolute best</p>
+                </div>
+
+                <!-- XL Vehicle Toggle -->
+                <div class="xl-toggle-container fade-in">
+                    <div class="xl-toggle-label">Vehicle Size</div>
+                    <label class="xl-toggle">
+                        <input type="checkbox" id="xlToggle" onchange="toggleXLPricing()">
+                        <span class="xl-slider"></span>
+                    </label>
+                    <div class="xl-toggle-labels">
+                        <span class="xl-toggle-option active" id="standardLabel">Standard Vehicle</span>
+                        <span class="xl-toggle-option inactive" id="xlLabel">XL Vehicle (+$20)</span>
+                    </div>
+                </div>
+
+                <div class="services-grid">
+                    <!-- Basic Interior Detail -->
+                    <div class="service-card fade-in">
+                        <div class="service-icon">🏠</div>
+                        <h3>Basic Interior Detail</h3>
+                        <div class="service-price" data-standard="80" data-xl="100">$80</div>
+                        <p class="service-description">Complete interior cleaning including vacuuming, surface wiping, and basic conditioning for a fresh, clean interior.</p>
+                        
+                        <div class="popular-addons">
+                            <div class="addons-title">Popular Add-ons</div>
+                            <div class="addon-item">
+                                <span class="addon-name">Pet Hair Removal</span>
+                                <span class="addon-price">+$25</span>
+                            </div>
+                            <div class="addon-item">
+                                <span class="addon-name">Stain Treatment</span>
+                                <span class="addon-price">+$30</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" onclick="showPage('booking')" class="btn btn-primary">Book Now</a>
+                    </div>
+
+                    <!-- Basic Exterior Detail -->
+                    <div class="service-card fade-in">
+                        <div class="service-icon">🚗</div>
+                        <h3>Basic Exterior Detail</h3>
+                        <div class="service-price" data-standard="80" data-xl="100">$80</div>
+                        <p class="service-description">Thorough exterior wash, rinse, and dry for a clean, fresh appearance.</p>
+                        
+                        <div class="popular-addons">
+                            <div class="addons-title">Popular Add-ons</div>
+                            <div class="addon-item">
+                                <span class="addon-name">Wheel Deep Clean</span>
+                                <span class="addon-price">+$15</span>
+                            </div>
+                            <div class="addon-item">
+                                <span class="addon-name">Bug & Tar Removal</span>
+                                <span class="addon-price">+$20</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" onclick="showPage('booking')" class="btn btn-primary">Book Now</a>
+                    </div>
+
+                    <!-- Basic Complete Package -->
+                    <div class="service-card combo-card fade-in">
+                        <div class="service-icon">🔄</div>
+                        <h3>Basic Complete Package</h3>
+                        <div class="service-price" data-standard="140" data-xl="180">
+                            <span class="combo-price">$140</span>
+                        </div>
+                        <p class="combo-savings">Save $20 - Interior + Exterior</p>
+                        <p class="service-description">Complete basic interior and exterior detailing package for the best value on comprehensive cleaning.</p>
+                        
+                        <div class="popular-addons">
+                            <div class="addons-title">Includes Both Services</div>
+                            <div class="addon-item">
+                                <span class="addon-name">Basic Interior Detail</span>
+                                <span class="addon-price">✓</span>
+                            </div>
+                            <div class="addon-item">
+                                <span class="addon-name">Basic Exterior Detail</span>
+                                <span class="addon-price">✓</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" onclick="showPage('booking')" class="btn btn-primary">Book Now</a>
+                    </div>
+
+                    <!-- Premium Interior Detail -->
+                    <div class="service-card fade-in">
+                        <div class="service-icon">⭐</div>
+                        <h3>Premium Interior Detail</h3>
+                        <div class="service-price" data-standard="150" data-xl="170">$150</div>
+                        <p class="service-description">Deep interior cleaning with premium conditioning, leather treatment, and odor elimination for that like-new feel.</p>
+                        
+                        <div class="popular-addons">
+                            <div class="addons-title">Popular Add-ons</div>
+                            <div class="addon-item">
+                                <span class="addon-name">Ozone Treatment</span>
+                                <span class="addon-price">+$40</span>
+                            </div>
+                            <div class="addon-item">
+                                <span class="addon-name">Carpet Steam Clean</span>
+                                <span class="addon-price">+$35</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" onclick="showPage('booking')" class="btn btn-primary">Book Now</a>
+                    </div>
+
+                    <!-- Premium Exterior Detail -->
+                    <div class="service-card fade-in">
+                        <div class="service-icon">✨</div>
+                        <h3>Premium Exterior Detail</h3>
+                        <div class="service-price" data-standard="150" data-xl="170">$150</div>
+                        <p class="service-description">Complete exterior treatment including clay bar, premium wax, and tire shine for maximum protection.</p>
+                        
+                        <div class="popular-addons">
+                            <div class="addons-title">Popular Add-ons</div>
+                            <div class="addon-item">
+                                <span class="addon-name">Engine Bay Clean</span>
+                                <span class="addon-price">+$50</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" onclick="showPage('booking')" class="btn btn-primary">Book Now</a>
+                    </div>
+
+                    <!-- Premium Complete Package -->
+                    <div class="service-card combo-card fade-in">
+                        <div class="service-icon">🌟</div>
+                        <h3>Premium Complete Package</h3>
+                        <div class="service-price" data-standard="265" data-xl="305">
+                            <span class="combo-price">$265</span>
+                        </div>
+                        <p class="combo-savings">Save $35 - Premium Interior + Exterior</p>
+                        <p class="service-description">Ultimate premium package combining deep interior detailing with complete exterior protection for maximum results.</p>
+                        
+                        <div class="popular-addons">
+                            <div class="addons-title">Includes Both Services</div>
+                            <div class="addon-item">
+                                <span class="addon-name">Super Fresh Interior Detail</span>
+                                <span class="addon-price">✓</span>
+                            </div>
+                            <div class="addon-item">
+                                <span class="addon-name">Full Exterior Detail</span>
+                                <span class="addon-price">✓</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" onclick="showPage('booking')" class="btn btn-primary">Book Now</a>
+                    </div>
+
+                    <!-- Maintenance Plan -->
+                    <div class="service-card fade-in">
+                        <div class="service-icon">🔄</div>
+                        <h3>Maintenance Plan</h3>
+                        <div class="service-price" data-standard="120" data-xl="150">$120/month</div>
+                        <p class="maintenance-note">*Requires initial Full Interior & Exterior Detail</p>
+                        <p class="service-description">Monthly maintenance detailing to keep your vehicle looking its best year-round. Includes wash, interior cleaning, and protection touch-ups.</p>
+                        
+                        <div class="popular-addons">
+                            <div class="addons-title">Plan Benefits</div>
+                            <div class="addon-item">
+                                <span class="addon-name">Priority Scheduling</span>
+                                <span class="addon-price">✓</span>
+                            </div>
+                            <div class="addon-item">
+                                <span class="addon-name">15% Off Additional Services</span>
+                                <span class="addon-price">✓</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" onclick="showPage('booking')" class="btn btn-primary">Start Plan</a>
+                    </div>
+
+                    <!-- Full Shine Treatment -->
+                    <div class="service-card featured fade-in">
+                        <div class="service-icon">💎</div>
+                        <h3>Full Shine Treatment</h3>
+                        <div class="service-price" data-standard="285" data-xl="305">$285</div>
+                        <p class="featured-subtitle">Complete Package - Best Value</p>
+                        <p class="service-description">The ultimate detailing experience - includes all interior and exterior services for maximum shine and protection.</p>
+                        
+                        <a href="#" onclick="showPage('booking')" class="btn btn-secondary">Book Now</a>
+                    </div>
+
+                    <!-- Headlight Restoration -->
+                    <div class="service-card fade-in">
+                        <div class="service-icon">💡</div>
+                        <h3>Headlight Restoration</h3>
+                        <div class="service-price" data-standard="40" data-xl="40">$40</div>
+                        <p class="service-description">Restore clarity and brightness to foggy, yellowed headlights for improved visibility and appearance.</p>
+                        
+                        <div class="popular-addons">
+                            <div class="addons-title">Popular Add-ons</div>
+                            <div class="addon-item">
+                                <span class="addon-name">Taillight Restoration</span>
+                                <span class="addon-price">+$20</span>
+                            </div>
+                            <div class="addon-item">
+                                <span class="addon-name">UV Protection Coating</span>
+                                <span class="addon-price">+$15</span>
+                            </div>
+                        </div>
+                        
+                        <a href="#" onclick="showPage('booking')" class="btn btn-primary">Book Now</a>
+                    </div>
+                </div>
+
+                <!-- Coming Soon Section -->
+                <div class="coming-soon-section">
+                    <p><strong>Paint Correction & Coating Packages</strong> - Coming Soon!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2>What Our Customers Say</h2>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Don't just take our word for it - hear from satisfied customers across Middle Georgia</p>
+                </div>
+                
+                <div class="testimonials-grid">
+                    <div class="testimonial-card fade-in">
+                        <div class="stars">★★★★★</div>
+                        <p class="testimonial-text">"Outstanding service! Austin came to my house and my car looks brand new. Very professional and attention to detail is incredible. Will definitely be using them again!"</p>
+                        <div class="testimonial-author">Mike Johnson</div>
+                        <div class="testimonial-location">Warner Robins, GA</div>
+                    </div>
+                    
+                    <div class="testimonial-card fade-in">
+                        <div class="stars">★★★★★</div>
+                        <p class="testimonial-text">"Best mobile detailing service in Middle Georgia! Bryton did an amazing job on my truck. Came right to my work and saved me so much time. Highly recommend!"</p>
+                        <div class="testimonial-author">Jessica Martinez</div>
+                        <div class="testimonial-location">Byron, GA</div>
+                    </div>
+                    
+                    <div class="testimonial-card fade-in">
+                        <div class="stars">★★★★★</div>
+                        <p class="testimonial-text">"These guys are the real deal! Professional, reliable, and my car has never looked better. The convenience of mobile service is unbeatable. Worth every penny!"</p>
+                        <div class="testimonial-author">Robert Davis</div>
+                        <div class="testimonial-location">Warner Robins, GA</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery">
+            <div class="container">
+                <h2 class="section-title">Gallery</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item fade-in" onclick="openLightbox(0)">
+                        <div class="gallery-placeholder">
+                            <img src="photocontent/IMG_0565.JPG" alt="Before/After Showcase" />
+                            <div class="gallery-overlay">
+                                <div class="gallery-overlay-text">Premium Interior Detailing</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item fade-in" onclick="openLightbox(1)">
+                        <div class="gallery-placeholder">
+                            <img src="photocontent/IMG_0568.JPG" alt="Super Fresh Exterior" />
+                            <div class="gallery-overlay">
+                                <div class="gallery-overlay-text">Super Fresh Exterior</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item fade-in" onclick="openLightbox(2)">
+                        <div class="gallery-placeholder">
+                            <img src="photocontent/image2.jpeg" alt="Interior Shine" />
+                            <div class="gallery-overlay">
+                                <div class="gallery-overlay-text">Interior Shine</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item fade-in" onclick="openLightbox(3)">
+                        <div class="gallery-placeholder">
+                            <img src="photocontent/IMG_9617.jpg" alt="Premium Detail Work" />
+                            <div class="gallery-overlay">
+                                <div class="gallery-overlay-text">Premium Detail Work</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item fade-in" onclick="openLightbox(4)">
+                        <div class="gallery-placeholder">
+                            <img src="photocontent/IMG_9676.jpg" alt="Professional Results" />
+                            <div class="gallery-overlay">
+                                <div class="gallery-overlay-text">Professional Results</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item fade-in" onclick="openLightbox(5)">
+                        <div class="gallery-placeholder">
+                            <img src="photocontent/IMG_9803.jpg" alt="Southern Shine Quality" />
+                            <div class="gallery-overlay">
+                                <div class="gallery-overlay-text">Southern Shine Quality</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item fade-in" onclick="openLightbox(6)">
+                        <div class="gallery-placeholder">
+                            <img src="photocontent/IMG_0571.JPG" alt="Interior Detail Work" />
+                            <div class="gallery-overlay">
+                                <div class="gallery-overlay-text">Interior Detail Work</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item fade-in" onclick="openLightbox(7)">
+                        <div class="gallery-placeholder">
+                            <img src="photocontent/IMG_0572.JPG" alt="Full Treatment Results" />
+                            <div class="gallery-overlay">
+                                <div class="gallery-overlay-text">Full Treatment Results</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item fade-in" onclick="openLightbox(8)">
+                        <div class="gallery-placeholder">
+                            <img src="photocontent/image3.jpeg" alt="Customer Satisfaction" />
+                            <div class="gallery-overlay">
+                                <div class="gallery-overlay-text">Customer Satisfaction</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <div class="section-header fade-in">
+                    <h2>Contact Us</h2>
+                    <div class="section-divider"></div>
+                    <p class="section-subtitle">Ready for the Southern Shine treatment? Get in touch to schedule your appointment</p>
+                </div>
+
+                <div class="contact-grid">
+                    <div class="slide-in-left">
+                        <div class="contact-info">
+                            <h3>Get In Touch</h3>
+                            
+                            <div class="contact-item">
+                                <div class="contact-icon">📞</div>
+                                <div class="contact-details">
+                                    <strong>Austin</strong>
+                                    <a href="tel:478-952-7965">(478) 952-7965</a>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">📞</div>
+                                <div class="contact-details">
+                                    <strong>Bryton</strong>
+                                    <a href="tel:478-733-1387">(478) 733-1387</a>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">📧</div>
+                                <div class="contact-details">
+                                    <strong>Email</strong>
+                                    <a href="mailto:getsouthernshine@gmail.com">getsouthernshine@gmail.com</a>
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">📍</div>
+                                <div class="contact-details">
+                                    <strong>Service Areas</strong>
+                                    Warner Robins & Byron, GA
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">🕒</div>
+                                <div class="contact-details">
+                                    <strong>Hours</strong>
+                                    Flexible by appointment
+                                </div>
+                            </div>
+
+                            <div class="contact-item">
+                                <div class="contact-icon">🚗</div>
+                                <div class="contact-details">
+                                    <strong>Mobile Service</strong>
+                                    We come to you!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slide-in-right">
+                        <div class="contact-cta-card">
+                            <h3>Ready to Book?</h3>
+                            <p class="cta-subtitle">Get your vehicle the Southern Shine treatment it deserves</p>
+                            
+                            <div class="cta-buttons">
+                                <a href="#" onclick="showPage('booking')" class="btn btn-book cta-btn">
+                                    📅 Book Online Now
+                                </a>
+                                <a href="tel:478-952-7965" class="btn btn-primary cta-btn">
+                                    📞 Call Austin
+                                </a>
+                                <a href="tel:478-733-1387" class="btn btn-secondary cta-btn">
+                                    📞 Call Bryton
+                                </a>
+                            </div>
+
+                            <div class="quick-info">
+                                <h4>Why Choose Southern Shine?</h4>
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <span class="info-icon">🚗</span>
+                                        <div class="info-text">
+                                            <strong>Mobile Service</strong>
+                                            <small>We come to your location</small>
+                                        </div>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-icon">⭐</span>
+                                        <div class="info-text">
+                                            <strong>Quality Guaranteed</strong>
+                                            <small>100% satisfaction promise</small>
+                                        </div>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-icon">🕒</span>
+                                        <div class="info-text">
+                                            <strong>Flexible Scheduling</strong>
+                                            <small>Work around your schedule</small>
+                                        </div>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-icon">💳</span>
+                                        <div class="info-text">
+                                            <strong>Easy Payment</strong>
+                                            <small>Cash, ApplePay, or Cashapp</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="service-highlight">
+                                <div class="highlight-header">
+                                    <span class="highlight-icon">⚡</span>
+                                    <strong>Same-Day Service Available</strong>
+                                </div>
+                                <p>Call before 2 PM for potential same-day service in Warner Robins and Byron areas!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Enhanced Booking Page -->
+    <div id="booking" class="page">
+        <div class="booking-page">
+            <div class="booking-container">
+                <div class="booking-header fade-in">
+                    <h1>Book Your Southern Shine Service</h1>
+                    <p class="section-subtitle">Schedule your premium mobile auto detailing service - we bring the Southern Shine directly to you!</p>
+                </div>
+
+                <div class="success-message" id="bookingSuccessMessage">
+                    <strong>🎉 Booking Request Submitted!</strong> We'll contact you within 2 hours to confirm your appointment and provide final pricing.
+                </div>
+
+                <form class="booking-form fade-in" onsubmit="handleBookingSubmit(event)">
+                    <h3>📋 Appointment Details</h3>
+                    
+                    <!-- Personal Information -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="booking-name">Full Name *</label>
+                            <input type="text" id="booking-name" name="name" required placeholder="Your full name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="booking-phone">Phone Number *</label>
+                            <input type="tel" id="booking-phone" name="phone" required placeholder="(123) 456-7890">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="booking-email">Email Address</label>
+                        <input type="email" id="booking-email" name="email" placeholder="your.email@example.com">
+                    </div>
+
+                    <!-- Scheduling -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="booking-date">Preferred Date *</label>
+                            <div class="date-input-wrapper">
+                                <input type="date" id="booking-date" name="date" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="booking-time">Preferred Time *</label>
+                            <select id="booking-time" name="time" required>
+                                <option value="">Select your preferred time...</option>
+                                <option value="8:00 AM">8:00 AM</option>
+                                <option value="9:00 AM">9:00 AM</option>
+                                <option value="10:00 AM">10:00 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="12:00 PM">12:00 PM</option>
+                                <option value="1:00 PM">1:00 PM</option>
+                                <option value="2:00 PM">2:00 PM</option>
+                                <option value="3:00 PM">3:00 PM</option>
+                                <option value="4:00 PM">4:00 PM</option>
+                                <option value="5:00 PM">5:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Vehicle Information -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="booking-vehicle">Vehicle Information</label>
+                            <input type="text" id="booking-vehicle" name="vehicle" placeholder="Year, Make, Model (e.g., 2020 Honda Accord)">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="booking-vehicle-size">Vehicle Size *</label>
+                            <select id="booking-vehicle-size" name="vehicleSize" required onchange="updateServicePricing()">
+                                <option value="">Select vehicle size...</option>
+                                <option value="standard">Standard Vehicle (Cars, Small SUVs)</option>
+                                <option value="xl">XL Vehicle (+$20) - Large SUVs, Trucks, Vans</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Main Service Selection -->
+                    <div class="form-group">
+                        <label for="booking-service">Primary Service *</label>
+                        <select id="booking-service" name="service" required onchange="updateServicePricing()">
+                            <option value="">Select your main service...</option>
+                            <optgroup label="Individual Services">
+                                <option value="basic-interior" data-standard="80" data-xl="100">Basic Interior Detail</option>
+                                <option value="basic-exterior" data-standard="80" data-xl="100">Basic Exterior Detail</option>
+                                <option value="super-fresh" data-standard="150" data-xl="170">Premium Interior Detail</option>
+                                <option value="full-exterior" data-standard="150" data-xl="170">Premium Exterior Detail</option>
+                                <option value="headlight" data-standard="40" data-xl="40">Headlight Restoration</option>
+                            </optgroup>
+                            <optgroup label="Complete Packages (Best Value)">
+                                <option value="basic-complete" data-standard="140" data-xl="180">Basic Complete Package - Save $20</option>
+                                <option value="premium-complete" data-standard="265" data-xl="305">Premium Complete Package - Save $35</option>
+                                <option value="full-shine" data-standard="285" data-xl="305">Full Shine Treatment - Ultimate Package</option>
+                            </optgroup>
+                            <optgroup label="Other">
+                                <option value="custom">Custom Package (Multiple Services)</option>
+                                <option value="maintenance">Maintenance Package Plan</option>
+                            </optgroup>
+                        </select>
+                        
+                        <!-- Service pricing display -->
+                        <div id="service-pricing-display" class="service-pricing-display">
+                            <div class="service-price-info">
+                                <span class="service-name" id="service-name"></span>
+                                <span class="service-price-amount" id="service-price"></span>
+                            </div>
+                            <div class="service-description-text" id="service-description"></div>
+                        </div>
+                    </div>
+
+                    <!-- Add-On Services -->
+                    <div class="form-group">
+                        <label for="booking-addons">Add-On Services (Optional)</label>
+                        <div class="addons-grid">
+                            <div class="addon-card" onclick="toggleAddon(this)">
+                                <input type="checkbox" name="addons" value="pet-hair" data-price="25" style="display: none;">
+                                <div class="addon-header">
+                                    <span class="addon-icon">🐕</span>
+                                    <span class="addon-price">$25</span>
+                                </div>
+                                <div class="addon-title">Pet Hair Removal</div>
+                            </div>
+                            
+                            <div class="addon-card" onclick="toggleAddon(this)">
+                                <input type="checkbox" name="addons" value="stain-treatment" data-price="30" style="display: none;">
+                                <div class="addon-header">
+                                    <span class="addon-icon">🧽</span>
+                                    <span class="addon-price">$30</span>
+                                </div>
+                                <div class="addon-title">Stain Treatment</div>
+                            </div>
+                            
+                            <div class="addon-card" onclick="toggleAddon(this)">
+                                <input type="checkbox" name="addons" value="wheel-deep-clean" data-price="15" style="display: none;">
+                                <div class="addon-header">
+                                    <span class="addon-icon">⚙️</span>
+                                    <span class="addon-price">$15</span>
+                                </div>
+                                <div class="addon-title">Wheel Deep Clean</div>
+                            </div>
+                            
+                            <div class="addon-card" onclick="toggleAddon(this)">
+                                <input type="checkbox" name="addons" value="bug-tar-removal" data-price="20" style="display: none;">
+                                <div class="addon-header">
+                                    <span class="addon-icon">🐛</span>
+                                    <span class="addon-price">$20</span>
+                                </div>
+                                <div class="addon-title">Bug & Tar Removal</div>
+                            </div>
+                            
+                            <div class="addon-card" onclick="toggleAddon(this)">
+                                <input type="checkbox" name="addons" value="ozone-treatment" data-price="40" style="display: none;">
+                                <div class="addon-header">
+                                    <span class="addon-icon">💨</span>
+                                    <span class="addon-price">$40</span>
+                                </div>
+                                <div class="addon-title">Ozone Treatment</div>
+                            </div>
+                            
+                            <div class="addon-card" onclick="toggleAddon(this)">
+                                <input type="checkbox" name="addons" value="carpet-steam" data-price="35" style="display: none;">
+                                <div class="addon-header">
+                                    <span class="addon-icon">🔥</span>
+                                    <span class="addon-price">$35</span>
+                                </div>
+                                <div class="addon-title">Carpet Steam Clean</div>
+                            </div>
+                            
+                            <div class="addon-card" onclick="toggleAddon(this)">
+                                <input type="checkbox" name="addons" value="engine-bay" data-price="50" style="display: none;">
+                                <div class="addon-header">
+                                    <span class="addon-icon">🔧</span>
+                                    <span class="addon-price">$50</span>
+                                </div>
+                                <div class="addon-title">Engine Bay Clean</div>
+                            </div>
+                            
+                            <div class="addon-card" onclick="toggleAddon(this)">
+                                <input type="checkbox" name="addons" value="taillight-restore" data-price="20" style="display: none;">
+                                <div class="addon-header">
+                                    <span class="addon-icon">💡</span>
+                                    <span class="addon-price">$20</span>
+                                </div>
+                                <div class="addon-title">Taillight Restoration</div>
+                            </div>
+                            
+                            <div class="addon-card" onclick="toggleAddon(this)">
+                                <input type="checkbox" name="addons" value="uv-protection" data-price="15" style="display: none;">
+                                <div class="addon-header">
+                                    <span class="addon-icon">☀️</span>
+                                    <span class="addon-price">$15</span>
+                                </div>
+                                <div class="addon-title">UV Protection Coating</div>
+                            </div>
+                        </div>
+                        <small class="addon-helper-text">
+                            Click cards to select multiple add-on services to enhance your detailing package
+                        </small>
+                    </div>
+
+                    <!-- Price Estimate -->
+                    <div class="form-group">
+                        <div id="price-estimate" class="price-estimate">
+                            <h4>💰 Estimated Total</h4>
+                            <div class="total-price" id="total-price">$0</div>
+                            <div class="price-breakdown" id="price-breakdown"></div>
+                            <small class="price-note">
+                                *Final price confirmed upon service completion
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Service Location -->
+                    <div class="form-group">
+                        <label for="booking-location">Service Location *</label>
+                        <input type="text" id="booking-location" name="location" placeholder="Your address where we should come to you" required>
+                        <small class="location-note">
+                            📍 We serve Warner Robins, Byron, and surrounding Middle Georgia areas
+                        </small>
+                    </div>
+
+                    <!-- Special Requests -->
+                    <div class="form-group">
+                        <label for="booking-notes">Special Requests or Notes</label>
+                        <textarea id="booking-notes" name="notes" placeholder="Any special requests, parking instructions, vehicle condition notes, or questions for our team..." rows="4"></textarea>
+                    </div>
+
+                    <!-- Service Information -->
+                    <div class="service-info-box">
+                        <h4>ℹ️ What happens next?</h4>
+                        <ul>
+                            <li><strong>Confirmation Call:</strong> We'll contact you within 2 hours to confirm your appointment</li>
+                            <li><strong>Service Day:</strong> We arrive on time with all professional equipment and supplies</li>
+                            <li><strong>Quality Guarantee:</strong> Inspect your vehicle and pay only when you're completely satisfied</li>
+                            <li><strong>Payment Options:</strong> Cash, card, or Venmo accepted upon completion</li>
+                        </ul>
+                    </div>
+
+                    <button type="submit" class="btn btn-book booking-submit-btn">
+                        🚗✨ Book My Southern Shine Service
+                    </button>
+
+                    <div class="contact-backup">
+                        <small>Need immediate service? Call us directly!</small><br>
+                        <a href="tel:478-952-7965">Austin: (478) 952-7965</a> | 
+                        <a href="tel:478-733-1387">Bryton: (478) 733-1387</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Southern Shine</h3>
+                    <p>Where your ride gets the Southern Shine it deserves.</p>
+                    <p>Professional mobile auto detailing serving Warner Robins and Byron, Georgia.</p>
+                    <a href="#" onclick="showPage('booking')" class="btn btn-book footer-book-btn">Book Appointment</a>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <a href="tel:478-952-7965">Austin: (478) 952-7965</a>
+                    <a href="tel:478-733-1387">Bryton: (478) 733-1387</a>
+                    <a href="mailto:getsouthernshine@gmail.com">getsouthernshine@gmail.com</a>
+                    <p>Warner Robins & Byron, GA</p>
+                    <p>Flexible hours by appointment</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Our Services</h3>
+                    <a href="#" onclick="scrollToSection('services')">Interior & Exterior Detailing</a>
+                    <a href="#" onclick="scrollToSection('services')">Headlight Restoration</a>
+                    <a href="#" onclick="scrollToSection('services')">Full Shine Treatment</a>
+                    <p>Mobile service available</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Follow & Review Us</h3>
+                    <p>Connect with us on social media and leave a review!</p>
+                    <div class="social-icons">
+                        <a href="https://share.google/FJVMsom6G2NZECGUS" target="_blank" rel="noopener noreferrer" class="social-icon" title="Leave a Google Review">
+                            <img src="photocontent/googleicon.png" alt="Google Reviews">
+                        </a>
+                        <a href="https://www.instagram.com/southern_shineautodetailing/" target="_blank" rel="noopener noreferrer" class="social-icon" title="Follow us on Instagram">
+                            <img src="photocontent/icons8-instagram-64.png" alt="Instagram">
+                        </a>
+                        <a href="#" target="_blank" rel="noopener noreferrer" class="social-icon" title="Like us on Facebook">
+                            <img src="photocontent/facebookicon.png" alt="Facebook">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Southern Shine Auto Detailing. All rights reserved. | Warner Robins & Byron, GA</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Contact Bar -->
+    <div class="mobile-contact-bar">
+        <div class="mobile-contact-buttons">
+            <a href="tel:478-952-7965" class="mobile-contact-btn">
+                📞 Call Austin
+            </a>
+            <a href="sms:478-733-1387" class="mobile-contact-btn">
+                💬 Text Bryton
+            </a>
+        </div>
+    </div>
+
+    <!-- Updated Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+            <div class="lightbox-counter">
+                <span id="lightbox-counter">1 / 9</span>
+            </div>
+            <div class="lightbox-navigation">
+                <button class="lightbox-nav lightbox-prev" onclick="previousImage()">&#10094;</button>
+                <button class="lightbox-nav lightbox-next" onclick="nextImage()">&#10095;</button>
+            </div>
+            <div class="lightbox-image-container">
+                <img id="lightbox-image" class="lightbox-image" src="" alt="">
+            </div>
+            <div class="lightbox-caption" id="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <script>
+        // Gallery images data - Fixed to match gallery
+        const galleryImages = [
+            {
+                src: "photocontent/IMG_0565.JPG",
+                alt: "Before/After Showcase",
+                caption: "Premium Interior Detailing - Before/After transformation showcasing our attention to detail"
+            },
+            {
+                src: "photocontent/IMG_0568.JPG",
+                alt: "Super Fresh Exterior",
+                caption: "Super Fresh Exterior - Premium exterior detailing results that speak for themselves"
+            },
+            {
+                src: "photocontent/image2.jpeg",
+                alt: "Interior Shine",
+                caption: "Interior Shine - Deep cleaning and conditioning for a like-new feel"
+            },
+            {
+                src: "photocontent/IMG_9617.jpg",
+                alt: "Premium Detail Work",
+                caption: "Premium Detail Work - Professional results using top-grade products and techniques"
+            },
+            {
+                src: "photocontent/IMG_9676.jpg",
+                alt: "Professional Results",
+                caption: "Professional Results - Quality you can see and feel in every surface"
+            },
+            {
+                src: "photocontent/IMG_9803.jpg",
+                alt: "Southern Shine Quality",
+                caption: "Southern Shine Quality - Where attention to detail meets exceptional service"
+            },
+            {
+                src: "photocontent/IMG_0571.JPG",
+                alt: "Interior Detail Work",
+                caption: "Interior Detail Work - Complete interior cleaning and conditioning"
+            },
+            {
+                src: "photocontent/IMG_0572.JPG",
+                alt: "Full Treatment Results",
+                caption: "Full Treatment Results - Complete interior and exterior transformation"
+            },
+            {
+                src: "photocontent/image3.jpeg",
+                alt: "Customer Satisfaction",
+                caption: "Customer Satisfaction - Happy customers and pristine vehicles across Middle Georgia"
+            }
+        ];
+
+        let currentImageIndex = 0;
+        let currentPage = 'home';
+
+        // XL Vehicle Toggle Function
+        function toggleXLPricing() {
+            const toggle = document.getElementById('xlToggle');
+            const standardLabel = document.getElementById('standardLabel');
+            const xlLabel = document.getElementById('xlLabel');
+            const priceElements = document.querySelectorAll('.service-price');
+            
+            if (toggle.checked) {
+                standardLabel.classList.remove('active');
+                standardLabel.classList.add('inactive');
+                xlLabel.classList.remove('inactive');
+                xlLabel.classList.add('active');
+                
+                priceElements.forEach(priceEl => {
+                    const xlPrice = priceEl.getAttribute('data-xl');
+                    priceEl.classList.add('updating');
+                    
+                    setTimeout(() => {
+                        priceEl.textContent = "$" + xlPrice;
+                        priceEl.classList.remove('updating');
+                    }, 150);
+                });
+            } else {
+                xlLabel.classList.remove('active');
+                xlLabel.classList.add('inactive');
+                standardLabel.classList.remove('inactive');
+                standardLabel.classList.add('active');
+                
+                priceElements.forEach(priceEl => {
+                    const standardPrice = priceEl.getAttribute('data-standard');
+                    priceEl.classList.add('updating');
+                    
+                    setTimeout(() => {
+                        priceEl.textContent = "$" + standardPrice;
+                        priceEl.classList.remove('updating');
+                    }, 150);
+                });
+            }
+        }
+
+        // Improved lightbox functions
+        function openLightbox(imageIndex) {
+            currentImageIndex = imageIndex;
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const lightboxCounter = document.getElementById('lightbox-counter');
+            
+            lightboxImage.src = galleryImages[currentImageIndex].src;
+            lightboxImage.alt = galleryImages[currentImageIndex].alt;
+            lightboxCaption.textContent = galleryImages[currentImageIndex].caption;
+            lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+            
+            lightbox.style.display = 'flex';
+            document.body.classList.add('lightbox-open');
+            
+            setTimeout(() => {
+                lightbox.classList.add('active');
+            }, 10);
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            
+            setTimeout(() => {
+                lightbox.style.display = 'none';
+                document.body.classList.remove('lightbox-open');
+            }, 300);
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+            updateLightboxImage();
+        }
+
+        function previousImage() {
+            currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+            updateLightboxImage();
+        }
+
+        function updateLightboxImage() {
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const lightboxCounter = document.getElementById('lightbox-counter');
+            
+            lightboxImage.style.opacity = '0.3';
+            
+            setTimeout(() => {
+                lightboxImage.src = galleryImages[currentImageIndex].src;
+                lightboxImage.alt = galleryImages[currentImageIndex].alt;
+                lightboxCaption.textContent = galleryImages[currentImageIndex].caption;
+                lightboxCounter.textContent = `${currentImageIndex + 1} / ${galleryImages.length}`;
+                lightboxImage.style.opacity = '1';
+            }, 150);
+        }
+
+        // Page navigation
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                currentPage = pageId;
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                setTimeout(() => {
+                    handleScrollAnimations();
+                }, 100);
+            }
+        }
+
+        function scrollToSection(sectionId) {
+            if (currentPage !== 'home') {
+                showPage('home');
+                setTimeout(() => {
+                    const element = document.getElementById(sectionId);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 300);
+            } else {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }
+
+        // Mobile menu functions
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+        }
+
+        function closeMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.remove('active');
+        }
+
+        // Animation handling
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Enhanced booking functionality
+        function toggleAddon(card) {
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            
+            if (checkbox.checked) {
+                card.classList.add('selected');
+            } else {
+                card.classList.remove('selected');
+            }
+            
+            updateServicePricing();
+        }
+
+        function updateServicePricing() {
+            const serviceSelect = document.getElementById('booking-service');
+            const vehicleSize = document.getElementById('booking-vehicle-size').value;
+            const priceEstimate = document.getElementById('price-estimate');
+            const totalPriceEl = document.getElementById('total-price');
+            const breakdownEl = document.getElementById('price-breakdown');
+            
+            if (!serviceSelect.value || !vehicleSize) {
+                priceEstimate.style.display = 'none';
+                return;
+            }
+            
+            const serviceOption = serviceSelect.selectedOptions[0];
+            const basePrice = parseInt(serviceOption.dataset[vehicleSize]) || 0;
+            
+            const selectedAddons = document.querySelectorAll('input[name="addons"]:checked');
+            let addonsTotal = 0;
+            
+            selectedAddons.forEach(addon => {
+                const price = parseInt(addon.dataset.price);
+                addonsTotal += price;
+            });
+            
+            const total = basePrice + addonsTotal;
+            
+            if (total > 0) {
+                totalPriceEl.textContent = `${total}`;
+                
+                let breakdown = serviceOption.text.split(' - ')[0];
+                if (addonsTotal > 0) {
+                    breakdown += ` + ${selectedAddons.length} add-on${selectedAddons.length > 1 ? 's' : ''} (+${addonsTotal})`;
+                }
+                breakdownEl.textContent = breakdown;
+                
+                priceEstimate.style.display = 'block';
+            } else {
+                priceEstimate.style.display = 'none';
+            }
+        }
+
+        // Enhanced form submission
+        function handleBookingSubmit(event) {
+            event.preventDefault();
+            
+            if (!validateForm(event.target)) {
+                alert('Please check the highlighted fields and correct any errors.');
+                return;
+            }
+            
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            
+            const selectedAddons = document.querySelectorAll('input[name="addons"]:checked');
+            const addons = Array.from(selectedAddons).map(addon => {
+                const card = addon.closest('.addon-card');
+                return card.querySelector('.addon-title').textContent + ' - ' + card.querySelector('.addon-price').textContent;
+            });
+            data.addons = addons;
+            
+            const subject = `🚗 SOUTHERN SHINE BOOKING - ${data.name} - ${data.date} at ${data.time}`;
+            const body = createEnhancedBookingEmail(data);
+            
+            const mailtoLink = `mailto:getsouthernshine@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.open(mailtoLink, '_blank');
+            
+            const successMessage = document.getElementById('bookingSuccessMessage');
+            successMessage.classList.add('show');
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            event.target.reset();
+            document.querySelectorAll('.addon-card').forEach(card => card.classList.remove('selected'));
+            document.getElementById('price-estimate').style.display = 'none';
+            
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 10000);
+        }
+
+        function createEnhancedBookingEmail(data) {
+            const addonsText = data.addons && data.addons.length > 0 ? data.addons.join('\n• ') : 'None selected';
+            
+            return `🚗✨ NEW BOOKING REQUEST - Southern Shine Auto Detailing
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📅 APPOINTMENT DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🗓️ Date: ${data.date}
+🕐 Time: ${data.time}
+📍 Location: ${data.location}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+👤 CUSTOMER INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Name: ${data.name}
+Phone: ${data.phone}
+Email: ${data.email || 'Not provided'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚙 VEHICLE & SERVICE DETAILS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Vehicle: ${data.vehicle || 'Not specified'}
+Size: ${data.vehicleSize}
+Primary Service: ${data.service}
+
+🛠️ ADD-ON SERVICES:
+• ${addonsText}
+
+💰 ESTIMATED TOTAL: ${document.getElementById('total-price')?.textContent || 'To be calculated'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📝 SPECIAL REQUESTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+${data.notes || 'No special requests'}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️ NEXT STEPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. CALL CUSTOMER within 2 hours at: ${data.phone}
+2. Confirm appointment details and final pricing
+3. Send confirmation text with arrival time
+4. Prepare equipment based on selected services
+
+Booking submitted: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}
+Source: Southern Shine Website - Enhanced Booking System`;
+        }
+
+        // Form validation
+        function validateForm(form) {
+            const inputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    input.style.borderColor = 'var(--accent-color)';
+                    isValid = false;
+                } else {
+                    input.style.borderColor = 'var(--border-color)';
+                }
+            });
+            
+            return isValid;
+        }
+
+        // Keyboard navigation for lightbox
+        document.addEventListener('keydown', function(event) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.style.display === 'flex') {
+                switch(event.key) {
+                    case 'Escape':
+                        closeLightbox();
+                        break;
+                    case 'ArrowLeft':
+                        previousImage();
+                        break;
+                    case 'ArrowRight':
+                        nextImage();
+                        break;
+                }
+            }
+        });
+
+        // Close lightbox when clicking outside the content
+        document.getElementById('lightbox').addEventListener('click', function(event) {
+            if (event.target === this) {
+                closeLightbox();
+            }
+        });
+
+        // Initialize on DOM load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set minimum date to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const dateInput = document.getElementById('booking-date');
+            if (dateInput) {
+                dateInput.min = tomorrow.toISOString().split('T')[0];
+            }
+            
+            // Initialize animations
+            handleScrollAnimations();
+            
+            // Add navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+                handleScrollAnimations();
+            });
+
+            // Prevent closing lightbox when clicking on content
+            const lightboxContent = document.querySelector('.lightbox-content');
+            if (lightboxContent) {
+                lightboxContent.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
+            }
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const menu = document.getElementById('mobileMenu');
+                const button = document.querySelector('.mobile-menu-btn');
+                
+                if (!menu.contains(event.target) && !button.contains(event.target)) {
+                    menu.classList.remove('active');
+                }
+            });
+        });
+
+        // Initialize hero animation
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                const heroContent = document.querySelector('.hero-content');
+                if (heroContent) {
+                    heroContent.classList.add('visible');
+                }
+            }, 100);
+        });
+        // Fixed scrollToSection function
+function scrollToSection(sectionId) {
+    // Check if we're already on the home page
+    if (currentPage !== 'home') {
+        // If not on home page, switch to home page first
+        showPage('home');
+        // Wait for page transition, then scroll
+        setTimeout(() => {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 300);
+    } else {
+        // If already on home page, scroll immediately
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+}
+
+// Also fix the navigation links to prevent default behavior
+function initializeNavigation() {
+    // Add event listeners to navigation links to prevent default href behavior
+    document.querySelectorAll('nav a[href="#"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault(); // This prevents the page from jumping to top
+        });
+    });
+}
+
+// Call this when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    initializeNavigation();
+    
+    // Rest of your existing DOMContentLoaded code...
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const dateInput = document.getElementById('booking-date');
+    if (dateInput) {
+        dateInput.min = tomorrow.toISOString().split('T')[0];
+    }
+    
+    handleScrollAnimations();
+    
+    window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+        handleScrollAnimations();
+    });
+
+    const lightboxContent = document.querySelector('.lightbox-content');
+    if (lightboxContent) {
+        lightboxContent.addEventListener('click', function(event) {
+            event.stopPropagation();
+        });
+    }
+
+    document.addEventListener('click', function(event) {
+        const menu = document.getElementById('mobileMenu');
+        const button = document.querySelector('.mobile-menu-btn');
+        
+        if (!menu.contains(event.target) && !button.contains(event.target)) {
+            menu.classList.remove('active');
+        }
+    });
+});
+    </script>
+</body>
+</html>
