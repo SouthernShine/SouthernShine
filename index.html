@@ -909,7 +909,7 @@
         </div>
     </div>
 
-    <script>
+<script>
         // Gallery images data - Fixed to match gallery
         const galleryImages = [
             {
@@ -1082,13 +1082,21 @@
                 setTimeout(() => {
                     const element = document.getElementById(sectionId);
                     if (element) {
-                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        element.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'start',
+                            inline: 'nearest'
+                        });
                     }
                 }, 300);
             } else {
                 const element = document.getElementById(sectionId);
                 if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    element.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start',
+                        inline: 'nearest'
+                    });
                 }
             }
         }
@@ -1301,6 +1309,15 @@ Source: Southern Shine Website - Enhanced Booking System`;
 
         // Initialize on DOM load
         document.addEventListener('DOMContentLoaded', function() {
+            // FIXED: Prevent default behavior on ALL links with href="#" 
+            // but preserve smooth scrolling for onclick functions
+            document.querySelectorAll('a[href="#"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault(); // This prevents the page from jumping to top
+                    // The onclick functions will still execute and handle smooth scrolling
+                });
+            });
+
             // Set minimum date to tomorrow
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
@@ -1351,78 +1368,6 @@ Source: Southern Shine Website - Enhanced Booking System`;
                 }
             }, 100);
         });
-        // Fixed scrollToSection function
-function scrollToSection(sectionId) {
-    // Check if we're already on the home page
-    if (currentPage !== 'home') {
-        // If not on home page, switch to home page first
-        showPage('home');
-        // Wait for page transition, then scroll
-        setTimeout(() => {
-            const element = document.getElementById(sectionId);
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }, 300);
-    } else {
-        // If already on home page, scroll immediately
-        const element = document.getElementById(sectionId);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    }
-}
-
-// Also fix the navigation links to prevent default behavior
-function initializeNavigation() {
-    // Add event listeners to navigation links to prevent default href behavior
-    document.querySelectorAll('nav a[href="#"]').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault(); // This prevents the page from jumping to top
-        });
-    });
-}
-
-// Call this when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-    initializeNavigation();
-    
-    // Rest of your existing DOMContentLoaded code...
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const dateInput = document.getElementById('booking-date');
-    if (dateInput) {
-        dateInput.min = tomorrow.toISOString().split('T')[0];
-    }
-    
-    handleScrollAnimations();
-    
-    window.addEventListener('scroll', function() {
-        const navbar = document.getElementById('navbar');
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-        handleScrollAnimations();
-    });
-
-    const lightboxContent = document.querySelector('.lightbox-content');
-    if (lightboxContent) {
-        lightboxContent.addEventListener('click', function(event) {
-            event.stopPropagation();
-        });
-    }
-
-    document.addEventListener('click', function(event) {
-        const menu = document.getElementById('mobileMenu');
-        const button = document.querySelector('.mobile-menu-btn');
-        
-        if (!menu.contains(event.target) && !button.contains(event.target)) {
-            menu.classList.remove('active');
-        }
-    });
-});
     </script>
 </body>
 </html>
