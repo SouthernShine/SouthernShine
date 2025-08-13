@@ -11,6 +11,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -286,7 +289,7 @@
                     <div class="service-card featured fade-in">
                         <div class="service-icon">💎</div>
                         <h3>Full Shine Treatment</h3>
-                        <div class="service-price" data-standard="285" data-xl="305">$285</div>
+                        <div class="service-price" data-standard="330" data-xl="350">$330</div>
                         <p class="featured-subtitle">Complete Package - Best Value</p>
                         <p class="service-description">The ultimate detailing experience - includes all interior and exterior services for maximum shine and protection.</p>
                         
@@ -585,10 +588,17 @@
                 </div>
 
                 <div class="success-message" id="bookingSuccessMessage">
-                    <strong>🎉 Booking Request Submitted!</strong> We'll contact you within 2 hours to confirm your appointment and provide final pricing.
+                    <strong>🎉 Booking Request Sent Successfully!</strong> 
+                    <p>We've received your booking request and will contact you within 2 hours to confirm your appointment and provide final pricing.</p>
+                    <p>You should also receive a confirmation email shortly.</p>
                 </div>
 
-                <form class="booking-form fade-in" onsubmit="handleBookingSubmit(event)">
+                <div class="error-message" id="bookingErrorMessage">
+                    <strong>❌ Booking Failed</strong> 
+                    <p>There was an error sending your booking request. Please try again or call us directly.</p>
+                </div>
+
+                <form class="booking-form fade-in" id="bookingForm">
                     <h3>📋 Appointment Details</h3>
                     
                     <!-- Personal Information -->
@@ -605,8 +615,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="booking-email">Email Address</label>
-                        <input type="email" id="booking-email" name="email" placeholder="your.email@example.com">
+                        <label for="booking-email">Email Address *</label>
+                        <input type="email" id="booking-email" name="email" required placeholder="your.email@example.com">
                     </div>
 
                     <!-- Scheduling -->
@@ -807,14 +817,15 @@
                     <div class="service-info-box">
                         <h4>ℹ️ What happens next?</h4>
                         <ul>
-                            <li><strong>Confirmation Call:</strong> We'll contact you within 2 hours to confirm your appointment</li>
-                            <li><strong>Service Day:</strong> We arrive on time with all professional equipment and supplies</li>
-                            <li><strong>Quality Guarantee:</strong> Inspect your vehicle and pay only when you're completely satisfied</li>
-                            <li><strong>Payment Options:</strong> Cash, card, or Venmo accepted upon completion</li>
+                            <li><strong>Automatic Confirmation:</strong> You'll receive an email confirmation immediately</li>
+                            <li><strong>Personal Contact:</strong> We'll call you within 2 hours to confirm details</li>
+                            <li><strong>Service Day:</strong> We arrive on time with all professional equipment</li>
+                            <li><strong>Quality Guarantee:</strong> 100% satisfaction guaranteed</li>
+                            <li><strong>Easy Payment:</strong> Cash, card, or digital payment upon completion</li>
                         </ul>
                     </div>
 
-                    <button type="submit" class="btn btn-book booking-submit-btn">
+                    <button type="submit" class="btn btn-book booking-submit-btn" id="submitBtn">
                         🚗✨ Book My Southern Shine Service
                     </button>
 
@@ -910,7 +921,17 @@
     </div>
 
 <script>
-        // Gallery images data - Fixed to match gallery
+        // EmailJS Configuration - REPLACE THESE WITH YOUR ACTUAL VALUES
+        const EMAILJS_CONFIG = {
+            serviceID: 'service_vrhfmo8',     // Replace with your EmailJS service ID
+            templateID: 'template_ojq0ril',   // Replace with your EmailJS template ID
+            publicKey: '-l3BsB6DaVlUN5vQl'      // Replace with your EmailJS public key
+        };
+
+        // Initialize EmailJS
+        emailjs.init(EMAILJS_CONFIG.publicKey);
+
+        // Gallery images data
         const galleryImages = [
             {
                 src: "photocontent/IMG_0565.JPG",
@@ -1179,90 +1200,95 @@
             }
         }
 
-        // Enhanced form submission
+        // Automated booking submission with EmailJS
         function handleBookingSubmit(event) {
             event.preventDefault();
             
-            if (!validateForm(event.target)) {
-                alert('Please check the highlighted fields and correct any errors.');
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('bookingSuccessMessage');
+            const errorMessage = document.getElementById('bookingErrorMessage');
+            const form = document.getElementById('bookingForm');
+            
+            // Hide any previous messages
+            successMessage.classList.remove('show');
+            errorMessage.classList.remove('show');
+            
+            // Validate form
+            if (!validateForm(form)) {
+                alert('Please fill in all required fields.');
                 return;
             }
             
-            const formData = new FormData(event.target);
+            // Change button state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '⏳ Sending Booking Request...';
+            
+            // Collect form data
+            const formData = new FormData(form);
             const data = Object.fromEntries(formData);
             
+            // Collect selected addons
             const selectedAddons = document.querySelectorAll('input[name="addons"]:checked');
             const addons = Array.from(selectedAddons).map(addon => {
                 const card = addon.closest('.addon-card');
                 return card.querySelector('.addon-title').textContent + ' - ' + card.querySelector('.addon-price').textContent;
             });
-            data.addons = addons;
             
-            const subject = `🚗 SOUTHERN SHINE BOOKING - ${data.name} - ${data.date} at ${data.time}`;
-            const body = createEnhancedBookingEmail(data);
+            // Prepare email template parameters
+            const templateParams = {
+                customer_name: data.name,
+                customer_phone: data.phone,
+                customer_email: data.email,
+                preferred_date: data.date,
+                preferred_time: data.time,
+                vehicle_info: data.vehicle || 'Not specified',
+                vehicle_size: data.vehicleSize,
+                primary_service: data.service,
+                selected_addons: addons.length > 0 ? addons.join('\n• ') : 'None selected',
+                service_location: data.location,
+                special_notes: data.notes || 'No special requests',
+                estimated_total: document.getElementById('total-price')?.textContent || 'To be calculated',
+                booking_date: new Date().toLocaleDateString(),
+                booking_time: new Date().toLocaleTimeString(),
+                service_breakdown: document.getElementById('price-breakdown')?.textContent || 'Service breakdown not available'
+            };
             
-            const mailtoLink = `mailto:getsouthernshine@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.open(mailtoLink, '_blank');
-            
-            const successMessage = document.getElementById('bookingSuccessMessage');
-            successMessage.classList.add('show');
-            successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            
-            event.target.reset();
-            document.querySelectorAll('.addon-card').forEach(card => card.classList.remove('selected'));
-            document.getElementById('price-estimate').style.display = 'none';
-            
-            setTimeout(() => {
-                successMessage.classList.remove('show');
-            }, 10000);
-        }
-
-        function createEnhancedBookingEmail(data) {
-            const addonsText = data.addons && data.addons.length > 0 ? data.addons.join('\n• ') : 'None selected';
-            
-            return `🚗✨ NEW BOOKING REQUEST - Southern Shine Auto Detailing
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📅 APPOINTMENT DETAILS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🗓️ Date: ${data.date}
-🕐 Time: ${data.time}
-📍 Location: ${data.location}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-👤 CUSTOMER INFORMATION
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Name: ${data.name}
-Phone: ${data.phone}
-Email: ${data.email || 'Not provided'}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🚙 VEHICLE & SERVICE DETAILS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Vehicle: ${data.vehicle || 'Not specified'}
-Size: ${data.vehicleSize}
-Primary Service: ${data.service}
-
-🛠️ ADD-ON SERVICES:
-• ${addonsText}
-
-💰 ESTIMATED TOTAL: ${document.getElementById('total-price')?.textContent || 'To be calculated'}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📝 SPECIAL REQUESTS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-${data.notes || 'No special requests'}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-⚠️ NEXT STEPS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-1. CALL CUSTOMER within 2 hours at: ${data.phone}
-2. Confirm appointment details and final pricing
-3. Send confirmation text with arrival time
-4. Prepare equipment based on selected services
-
-Booking submitted: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}
-Source: Southern Shine Website - Enhanced Booking System`;
+            // Send email via EmailJS
+            emailjs.send(EMAILJS_CONFIG.serviceID, EMAILJS_CONFIG.templateID, templateParams)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    
+                    // Show success message
+                    successMessage.classList.add('show');
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Reset form
+                    form.reset();
+                    document.querySelectorAll('.addon-card').forEach(card => card.classList.remove('selected'));
+                    document.getElementById('price-estimate').style.display = 'none';
+                    
+                    // Auto-hide success message after 15 seconds
+                    setTimeout(() => {
+                        successMessage.classList.remove('show');
+                    }, 15000);
+                    
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    
+                    // Show error message
+                    errorMessage.classList.add('show');
+                    errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Auto-hide error message after 10 seconds
+                    setTimeout(() => {
+                        errorMessage.classList.remove('show');
+                    }, 10000);
+                })
+                .finally(function() {
+                    // Reset button state
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '🚗✨ Book My Southern Shine Service';
+                });
         }
 
         // Form validation
@@ -1272,10 +1298,10 @@ Source: Southern Shine Website - Enhanced Booking System`;
             
             inputs.forEach(input => {
                 if (!input.value.trim()) {
-                    input.style.borderColor = 'var(--accent-color)';
+                    input.style.borderColor = '#e74c3c';
                     isValid = false;
                 } else {
-                    input.style.borderColor = 'var(--border-color)';
+                    input.style.borderColor = '';
                 }
             });
             
@@ -1309,12 +1335,10 @@ Source: Southern Shine Website - Enhanced Booking System`;
 
         // Initialize on DOM load
         document.addEventListener('DOMContentLoaded', function() {
-            // FIXED: Prevent default behavior on ALL links with href="#" 
-            // but preserve smooth scrolling for onclick functions
+            // Prevent default behavior on ALL links with href="#" 
             document.querySelectorAll('a[href="#"]').forEach(link => {
                 link.addEventListener('click', function(e) {
-                    e.preventDefault(); // This prevents the page from jumping to top
-                    // The onclick functions will still execute and handle smooth scrolling
+                    e.preventDefault();
                 });
             });
 
@@ -1357,6 +1381,12 @@ Source: Southern Shine Website - Enhanced Booking System`;
                     menu.classList.remove('active');
                 }
             });
+
+            // Add form submission handler
+            const bookingForm = document.getElementById('bookingForm');
+            if (bookingForm) {
+                bookingForm.addEventListener('submit', handleBookingSubmit);
+            }
         });
 
         // Initialize hero animation
@@ -1369,5 +1399,54 @@ Source: Southern Shine Website - Enhanced Booking System`;
             }, 100);
         });
     </script>
+
+    <!-- CSS for new success/error messages -->
+    <style>
+        .success-message, .error-message {
+            display: none;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .success-message {
+            background: rgba(39, 174, 96, 0.1);
+            border: 2px solid #27ae60;
+            color: #27ae60;
+        }
+
+        .error-message {
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid #e74c3c;
+            color: #e74c3c;
+        }
+
+        .success-message.show, .error-message.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-message p, .error-message p {
+            margin: 5px 0;
+        }
+
+        .booking-submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
 </body>
 </html>
