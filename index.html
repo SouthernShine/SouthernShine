@@ -801,7 +801,19 @@
                     <!-- Service Location -->
                     <div class="form-group">
                         <label for="booking-location">Service Location *</label>
-                        <input type="text" id="booking-location" name="location" placeholder="Your address where we should come to you" required>
+                        <div class="location-input-container">
+                            <input 
+                                type="text" 
+                                id="booking-location" 
+                                name="location" 
+                                placeholder="Your address where we should come to you" 
+                                required
+                                autocomplete="off"
+                            >
+                            <span class="validation-icon" id="validation-icon"></span>
+                            <div class="autocomplete-dropdown" id="autocomplete-dropdown"></div>
+                        </div>
+                        <div class="validation-message" id="validation-message"></div>
                         <small class="location-note">
                             📍 We serve Warner Robins, Byron, and surrounding Middle Georgia areas
                         </small>
@@ -1398,6 +1410,513 @@
                 }
             }, 100);
         });
+
+        // Copy the entire FreeAddressValidator class from the artifact above
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    
+    new EnhancedAddressValidator();
+});
+
+class EnhancedAddressValidator {
+    constructor() {
+        this.input = document.getElementById('booking-location');
+        this.validationIcon = document.getElementById('validation-icon');
+        this.validationMessage = document.getElementById('validation-message');
+        this.dropdown = document.getElementById('autocomplete-dropdown');
+        this.debounceTimer = null;
+        this.currentRequest = null;
+        this.selectedIndex = -1;
+        this.suggestions = [];
+        
+        // Enhanced service areas with better coverage
+        this.serviceAreas = [
+            { 
+                name: 'Warner Robins', 
+                state: 'GA',
+                lat: 32.6130, 
+                lon: -83.6240, 
+                radius: 15,
+                primary: true,
+                keywords: ['warner robins', 'warner', 'robins', 'wr']
+            },
+            { 
+                name: 'Byron', 
+                state: 'GA',
+                lat: 32.6469, 
+                lon: -83.7518, 
+                radius: 12,
+                primary: true,
+                keywords: ['byron']
+            },
+            { 
+                name: 'Macon', 
+                state: 'GA',
+                lat: 32.8407, 
+                lon: -83.6324, 
+                radius: 20,
+                primary: false,
+                keywords: ['macon']
+            },
+            { 
+                name: 'Perry', 
+                state: 'GA',
+                lat: 32.4582, 
+                lon: -83.7315, 
+                radius: 12,
+                primary: false,
+                keywords: ['perry']
+            },
+            { 
+                name: 'Bonaire', 
+                state: 'GA',
+                lat: 32.4832, 
+                lon: -83.6890, 
+                radius: 10,
+                primary: false,
+                keywords: ['bonaire']
+            },
+            { 
+                name: 'Kathleen', 
+                state: 'GA',
+                lat: 32.4254, 
+                lon: -83.4016, 
+                radius: 10,
+                primary: false,
+                keywords: ['kathleen']
+            },
+            { 
+                name: 'Centerville', 
+                state: 'GA',
+                lat: 32.6351, 
+                lon: -83.1696, 
+                radius: 10,
+                primary: false,
+                keywords: ['centerville']
+            },
+            { 
+                name: 'Fort Valley', 
+                state: 'GA',
+                lat: 32.5532, 
+                lon: -83.8877, 
+                radius: 15,
+                primary: false,
+                keywords: ['fort valley', 'fortvalley']
+            }
+        ];
+
+        this.init();
+    }
+
+    init() {
+        if (!this.input || !this.validationIcon || !this.validationMessage || !this.dropdown) {
+            console.log('Address validation elements not found');
+            return;
+        }
+
+        this.input.addEventListener('input', (e) => this.handleInput(e));
+        this.input.addEventListener('blur', () => this.handleBlur());
+        this.input.addEventListener('focus', () => this.handleFocus());
+        this.input.addEventListener('keydown', (e) => this.handleKeyDown(e));
+
+        // Handle clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.location-input-container')) {
+                this.hideDropdown();
+            }
+        });
+
+        this.showMessage('Start typing your address (e.g., "123 Main St, Warner Robins")', 'success');
+    }
+
+    handleInput(e) {
+        const value = e.target.value.trim();
+        
+        this.clearValidation();
+        this.selectedIndex = -1;
+        
+        if (this.currentRequest) {
+            this.currentRequest.abort();
+        }
+
+        clearTimeout(this.debounceTimer);
+        
+        if (value.length >= 2) {
+            this.debounceTimer = setTimeout(() => {
+                this.searchAddresses(value);
+            }, 200); // Faster response
+        } else {
+            this.hideDropdown();
+            if (value.length === 0) {
+                this.showMessage('Start typing your address (e.g., "123 Main St, Warner Robins")', 'success');
+            }
+        }
+    }
+
+    handleBlur() {
+        setTimeout(() => {
+            this.hideDropdown();
+        }, 150);
+    }
+
+    handleFocus() {
+        if (this.suggestions.length > 0 && this.input.value.length >= 2) {
+            this.showDropdown();
+        }
+    }
+
+    handleKeyDown(e) {
+        if (!this.dropdown.style.display || this.dropdown.style.display === 'none') {
+            return;
+        }
+
+        const items = this.dropdown.querySelectorAll('.autocomplete-item');
+        
+        switch(e.key) {
+            case 'ArrowDown':
+                e.preventDefault();
+                this.selectedIndex = Math.min(this.selectedIndex + 1, items.length - 1);
+                this.updateSelection(items);
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                this.selectedIndex = Math.max(this.selectedIndex - 1, -1);
+                this.updateSelection(items);
+                break;
+            case 'Enter':
+                e.preventDefault();
+                if (this.selectedIndex >= 0 && items[this.selectedIndex]) {
+                    this.selectAddress(this.suggestions[this.selectedIndex]);
+                }
+                break;
+            case 'Escape':
+                this.hideDropdown();
+                break;
+        }
+    }
+
+    updateSelection(items) {
+        items.forEach((item, index) => {
+            item.classList.toggle('highlighted', index === this.selectedIndex);
+        });
+
+        // Scroll selected item into view
+        if (this.selectedIndex >= 0 && items[this.selectedIndex]) {
+            items[this.selectedIndex].scrollIntoView({
+                block: 'nearest',
+                behavior: 'smooth'
+            });
+        }
+    }
+
+    async searchAddresses(query) {
+        try {
+            this.setLoading(true);
+            
+            const controller = new AbortController();
+            this.currentRequest = controller;
+
+            // Enhanced search with better parameters
+            const searchQuery = this.enhanceSearchQuery(query);
+            const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&state=georgia&q=${encodeURIComponent(searchQuery)}`;
+            
+            const response = await fetch(url, {
+                signal: controller.signal,
+                headers: {
+                    'User-Agent': 'SouthernShineDetailing/1.0'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            this.processSuggestions(data, query);
+
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                return;
+            }
+            console.error('Address search error:', error);
+            this.showError('Unable to search addresses. Please check your connection.');
+        } finally {
+            this.setLoading(false);
+            this.currentRequest = null;
+        }
+    }
+
+    enhanceSearchQuery(query) {
+        // If query doesn't contain Georgia city names, try adding them
+        const hasCity = this.serviceAreas.some(area => 
+            area.keywords.some(keyword => 
+                query.toLowerCase().includes(keyword.toLowerCase())
+            )
+        );
+        
+        return hasCity ? query : `${query} middle georgia`;
+    }
+
+    processSuggestions(data, originalQuery) {
+        this.suggestions = data
+            .filter(item => {
+                const state = item.address?.state || '';
+                return state.toLowerCase() === 'georgia';
+            })
+            .map(item => {
+                const formatted = this.formatAddress(item.address);
+                const serviceInfo = this.getServiceInfo(item);
+                return {
+                    display_name: item.display_name,
+                    lat: parseFloat(item.lat),
+                    lon: parseFloat(item.lon),
+                    address: item.address,
+                    formatted: formatted,
+                    serviceInfo: serviceInfo,
+                    raw: item,
+                    relevanceScore: this.calculateRelevance(item, originalQuery)
+                };
+            })
+            .sort((a, b) => {
+                // Sort by service availability first, then relevance
+                if (a.serviceInfo.isAvailable !== b.serviceInfo.isAvailable) {
+                    return b.serviceInfo.isAvailable - a.serviceInfo.isAvailable;
+                }
+                return b.relevanceScore - a.relevanceScore;
+            })
+            .slice(0, 8); // Limit to 8 results
+
+        if (this.suggestions.length > 0) {
+            this.showSuggestions();
+        } else {
+            this.showNoResults(originalQuery);
+        }
+    }
+
+    calculateRelevance(item, query) {
+        let score = 0;
+        const queryLower = query.toLowerCase();
+        const address = item.address || {};
+        
+        // Higher score for exact street matches
+        if (address.road && queryLower.includes(address.road.toLowerCase())) {
+            score += 3;
+        }
+        
+        // Higher score for house number matches
+        if (address.house_number && queryLower.includes(address.house_number)) {
+            score += 2;
+        }
+        
+        // Higher score for city matches in our service areas
+        const city = (address.city || address.town || '').toLowerCase();
+        if (this.serviceAreas.some(area => area.keywords.includes(city))) {
+            score += 4;
+        }
+        
+        return score;
+    }
+
+    formatAddress(address) {
+        const parts = [];
+        if (address.house_number) parts.push(address.house_number);
+        if (address.road) parts.push(address.road);
+        
+        const main = parts.join(' ');
+        const city = address.city || address.town || address.village || address.suburb || '';
+        const state = 'GA'; // We know it's Georgia
+        
+        return {
+            main: main || 'Address',
+            city: city,
+            full: main ? `${main}, ${city}, ${state}` : `${city}, ${state}`,
+            display: main || city
+        };
+    }
+
+    getServiceInfo(item) {
+        const lat = parseFloat(item.lat);
+        const lon = parseFloat(item.lon);
+        
+        for (const area of this.serviceAreas) {
+            const distance = this.calculateDistance(lat, lon, area.lat, area.lon);
+            if (distance <= area.radius) {
+                return {
+                    isAvailable: true,
+                    area: area,
+                    distance: distance
+                };
+            }
+        }
+        
+        const nearestArea = this.findNearestServiceArea(lat, lon);
+        const distance = this.calculateDistance(lat, lon, nearestArea.lat, nearestArea.lon);
+        
+        return {
+            isAvailable: false,
+            area: nearestArea,
+            distance: distance
+        };
+    }
+
+    showSuggestions() {
+        this.dropdown.innerHTML = '';
+        
+        // Add helper text
+        const helper = document.createElement('div');
+        helper.className = 'search-helper';
+        helper.textContent = 'Select an address from the suggestions below:';
+        this.dropdown.appendChild(helper);
+        
+        this.suggestions.forEach((suggestion, index) => {
+            const item = document.createElement('div');
+            item.className = `autocomplete-item ${suggestion.serviceInfo.isAvailable ? 'exact-match' : ''}`;
+            
+            const cityBadge = suggestion.formatted.city ? 
+                `<span class="city-badge">${suggestion.formatted.city}</span>` : '';
+            
+            const serviceStatus = suggestion.serviceInfo.isAvailable ? 
+                '<span class="service-status available">✓ We Serve</span>' :
+                `<span class="service-status unavailable">✗ ${Math.round(suggestion.serviceInfo.distance)}mi away</span>`;
+            
+            item.innerHTML = `
+                <div class="address-main">${suggestion.formatted.display}</div>
+                <div class="address-details">
+                    ${cityBadge}
+                    ${serviceStatus}
+                </div>
+            `;
+            
+            item.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                this.selectAddress(suggestion);
+            });
+            
+            item.addEventListener('mouseenter', () => {
+                this.selectedIndex = index;
+                this.updateSelection(this.dropdown.querySelectorAll('.autocomplete-item'));
+            });
+            
+            this.dropdown.appendChild(item);
+        });
+
+        this.showDropdown();
+    }
+
+    showNoResults(query) {
+        this.dropdown.innerHTML = `
+            <div class="search-helper">No addresses found for "${query}"</div>
+            <div class="no-results">
+                Try being more specific (e.g., "123 Main St, Warner Robins") or check spelling
+            </div>
+        `;
+        this.showDropdown();
+    }
+
+    showDropdown() {
+        this.dropdown.style.display = 'block';
+        this.dropdown.classList.add('show');
+        setTimeout(() => this.dropdown.classList.remove('show'), 200);
+    }
+
+    hideDropdown() {
+        this.dropdown.style.display = 'none';
+        this.selectedIndex = -1;
+    }
+
+    selectAddress(suggestion) {
+        this.input.value = suggestion.formatted.full;
+        this.hideDropdown();
+        this.validateAddress(suggestion);
+    }
+
+    validateAddress(suggestion) {
+        if (suggestion.serviceInfo.isAvailable) {
+            this.showValidAddress(`✓ Perfect! We serve ${suggestion.formatted.city}, GA. Your address is confirmed!`);
+        } else {
+            const nearestArea = suggestion.serviceInfo.area;
+            const distance = Math.round(suggestion.serviceInfo.distance);
+            this.showInvalidAddress(`Sorry, ${suggestion.formatted.city} is ${distance} miles from our service area. We primarily serve ${nearestArea.name} and surrounding areas within ${nearestArea.radius} miles.`);
+        }
+    }
+
+    findNearestServiceArea(lat, lon) {
+        let nearest = this.serviceAreas[0];
+        let minDistance = this.calculateDistance(lat, lon, nearest.lat, nearest.lon);
+        
+        for (const area of this.serviceAreas) {
+            const distance = this.calculateDistance(lat, lon, area.lat, area.lon);
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearest = area;
+            }
+        }
+        
+        return nearest;
+    }
+
+    calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 3959; // Earth's radius in miles
+        const dLat = this.toRadians(lat2 - lat1);
+        const dLon = this.toRadians(lon2 - lon1);
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                 Math.cos(this.toRadians(lat1)) * Math.cos(this.toRadians(lat2)) *
+                 Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    }
+
+    toRadians(degrees) {
+        return degrees * (Math.PI / 180);
+    }
+
+    showValidAddress(message) {
+        this.input.classList.remove('invalid');
+        this.input.classList.add('valid');
+        this.validationIcon.textContent = '✓';
+        this.validationIcon.style.color = '#10b981';
+        this.showMessage(message, 'success');
+    }
+
+    showInvalidAddress(message) {
+        this.input.classList.remove('valid');
+        this.input.classList.add('invalid');
+        this.validationIcon.textContent = '✗';
+        this.validationIcon.style.color = '#ef4444';
+        this.showMessage(message, 'error');
+    }
+
+    showError(message) {
+        this.input.classList.remove('valid');
+        this.input.classList.add('invalid');
+        this.validationIcon.textContent = '⚠';
+        this.validationIcon.style.color = '#f59e0b';
+        this.showMessage(message, 'error');
+    }
+
+    showMessage(message, type = '') {
+        this.validationMessage.textContent = message;
+        this.validationMessage.className = `validation-message ${type}`;
+    }
+
+    clearValidation() {
+        this.input.classList.remove('valid', 'invalid');
+        this.validationIcon.textContent = '';
+        this.validationMessage.textContent = '';
+        this.validationMessage.className = 'validation-message';
+    }
+
+    setLoading(isLoading) {
+        if (isLoading) {
+            this.input.classList.add('loading');
+            this.validationIcon.textContent = '⏳';
+            this.validationIcon.style.color = '#6b7280';
+        } else {
+            this.input.classList.remove('loading');
+        }
+    }
+}
     </script>
 
     <!-- CSS for new success/error messages -->
